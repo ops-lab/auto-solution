@@ -1,8 +1,8 @@
--- DROP DATABASE IF EXISTS auto_solution;
+-- DROP DATABASE IF EXISTS autosolution;
 
-CREATE DATABASE IF NOT EXISTS auto_solution DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE DATABASE IF NOT EXISTS autosolution DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-USE auto_solution;
+USE autosolution;
 
 CREATE TABLE IF NOT EXISTS `case_lib` (
     `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'id',

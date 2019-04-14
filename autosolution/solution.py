@@ -38,7 +38,7 @@ SQL_DB_NAME = 'userinfo'
 
 jenkins_url = "JENKINS_URL"
 jenkins_username = "jenkins"
-jenkins_password = "xxxxxxxxx"
+jenkins_password = "jenkins_password"
 
 def parse_parameters():
     usage = "Usage: %prog [option] args"
@@ -380,7 +380,7 @@ def send_mail(html_msg, project_name, receivers):
     smtp_host = "mail.email.com"
     smtp_port = 25
     username = "jenkins@email.com"
-    password = "xxxxxxxxx"
+    password = "jenkins_password"
 
     sender = "jenkins@email.com"
     cc = "jiuchou@email.com"

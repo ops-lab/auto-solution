@@ -8,7 +8,7 @@ JENKINS_CLI_PATH="/home/jenkins/.jenkins/war/WEB-INF/jenkins-cli.jar"
 JENKINS_URL="http://127.0.0.1:8080"
 
 JENKINS_USERNAME="jenkins"
-JENKINS_PASSWORD="xxxxxxxx"
+JENKINS_PASSWORD="jenkins_password"
 
 JENKINS_CMD_PREFIX="java -jar ${JENKINS_CLI_PATH} -s ${JENKINS_URL}"
 

@@ -36,7 +36,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 #
 # Authors:
-# jiuchou <747167595@qq.com>
+# jiuchou <315675275@qq.com>
 # ==============================================================================
 import MySQLdb
 import pymssql

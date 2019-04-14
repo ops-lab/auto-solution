@@ -1,4 +1,4 @@
 include LICENSE
 include README.rst
-recursive-include auto_solution *
+recursive-include autosolution *
 recursive-include docs *

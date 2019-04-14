@@ -27,8 +27,8 @@ def get_version(package):
     return re.search("__version__ = ['\"]([^'\"]+)['\"]", init_py).group(1)
 
 
-name = get_name('auto_solution')
-version = get_version('auto_solution')
+name = get_name('autosolution')
+version = get_version('autosolution')
 
 with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
     README = readme.read()
@@ -88,7 +88,7 @@ setup(
     long_description=README,
     url='https://github.com/jiuchou/auto-solution',
     author='jiuchou',
-    author_email='747167595@qq.com',
+    author_email='315675275@qq.com',
     classifiers=[
         'Environment :: Web Environment',
         'Intended Audience :: Developers',

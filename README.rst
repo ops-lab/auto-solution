@@ -22,7 +22,7 @@ Quick start
 
     jenkins_url = "JENKINS_URL"
     jenkins_username = "jenkins"
-    jenkins_password = "xxxxxxxxxxxxxxxxxxxx"
+    jenkins_password = "jenkins_password"
 
     make
 

@@ -30,7 +30,7 @@ uninstall:
 		find $(currentDir) -type d -name $$uselessDir | xargs -i rm -rf {}; \
 	done
 	$(pip) uninstall auto-solution -y
-	rm -rf $(pipInstallPath)/auto_solution
+	rm -rf $(pipInstallPath)/autosolution
 
 # make clean
 #	function: delete useless file

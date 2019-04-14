@@ -45,7 +45,7 @@ Automatic Tools
 
 - Install auto-solution tools(How to get auto-solution tools refer to README.rst_)::
 
-    pip install auto_solution-1.0.tar.gz
+    pip install auto-solution-1.0.tar.gz
 
 .. _README.rst: ../README.rst
 
@@ -74,4 +74,4 @@ Then execute database.sql that case writed to case library.
 
 ::
 
-    mysql -h10.6.5.100 -P3306 -uroot -proot < database.sql
+    mysql -h127.0.0.1 -P3306 -uroot -proot < database.sql
