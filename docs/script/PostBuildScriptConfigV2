@@ -1,0 +1,50 @@
+    <org.jenkinsci.plugins.postbuildscript.PostBuildScript plugin="postbuildscript@2.8.1">
+      <config>
+        <scriptFiles/>
+        <groovyScripts/>
+        <buildSteps>
+          <org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+            <results>
+              <string>FAILURE</string>
+            </results>
+            <role>BOTH</role>
+            <buildSteps>
+              <hudson.plugins.groovy.SystemGroovy plugin="groovy@2.0">
+                <source class="hudson.plugins.groovy.StringSystemScriptSource">
+                  <script plugin="script-security@1.50">
+                    <script>import hudson.model.*
+import hudson.AbortException
+import hudson.console.HyperlinkNote
+import java.util.concurrent.CancellationException
+
+println &quot; ------------------------------------------------------------------------------ &quot;
+println &quot; -                               auto-solution                                - &quot;
+println &quot; ------------------------------------------------------------------------------ &quot;
+// get current thread / Executor
+def thr = Thread.currentThread()
+// get current build
+def build = thr?.executable
+
+def JENKINS_HOME = build.getEnvironment()[&apos;JENKINS_HOME&apos;]
+def BUILD_URL = build.getEnvironment()[&apos;BUILD_URL&apos;]
+
+def command = &quot;bash ${JENKINS_HOME}/postbuildscript/postbuildscript.sh ${BUILD_URL}&quot;
+def proc = command.execute()
+proc.waitFor()
+println &quot; [auto-solution] return code: ${proc.exitValue()}&quot;
+println &quot; [auto-solution] stdout: ${proc.in.text}&quot;
+println &quot; [auto-solution] stderr: ${proc.err.text}&quot;
+
+println &quot; [auto-solution] Success!&quot;
+println &quot; ------------------------------------------------------------------------------ \n&quot;
+                    </script>
+                    <sandbox>false</sandbox>
+                  </script>
+                </source>
+              </hudson.plugins.groovy.SystemGroovy>
+            </buildSteps>
+          </org.jenkinsci.plugins.postbuildscript.model.PostBuildStep>
+        </buildSteps>
+        <markBuildUnstable>false</markBuildUnstable>
+      </config>
+    </org.jenkinsci.plugins.postbuildscript.PostBuildScript>
