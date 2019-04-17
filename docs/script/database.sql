@@ -4,14 +4,21 @@ CREATE DATABASE IF NOT EXISTS autosolution DEFAULT CHARACTER SET utf8 COLLATE ut
 
 USE autosolution;
 
+-- change table column name
+-- alter table case_lib change case_info case_info varchar(1024) null;
+-- alter table case_lib change case_type case_type varchar(1024) null;
+
+-- modify table column properties
+-- ALTER TABLE case_lib MODIFY column case_info varchar(1024) NULL COMMENT '错误信息';
+-- ALTER TABLE case_lib MODIFY column case_type varchar(256) NULL COMMENT '错误类型';
 CREATE TABLE IF NOT EXISTS `case_lib` (
     `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'id',
     `case_key` varchar(256) NOT NULL COMMENT '关键字',
-    `case_info` varchar(1024) NOT NULL COMMENT '错误信息',
-    `case_type` varchar(256) NOT NULL COMMENT '错误类型',
-    `case_description` varchar(1024) NOT NULL COMMENT '错误描述',
-    `case_solution` varchar(1024) NOT NULL COMMENT '解决方案（推荐）',
-    `case_remark` varchar(512) NOT NULL COMMENT '备注'
+    `case_info` varchar(1024) COMMENT '错误信息',
+    `case_type` varchar(256) COMMENT '错误类型',
+    `case_description` varchar(1024) COMMENT '错误描述',
+    `case_solution` varchar(1024) COMMENT '解决方案（推荐）',
+    `case_remark` varchar(512) COMMENT '备注'
 );
 
 INSERT INTO case_lib(case_key, case_info, case_type, case_description, case_solution, case_remark) VALUES(
