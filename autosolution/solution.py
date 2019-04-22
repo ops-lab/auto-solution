@@ -125,7 +125,19 @@ def get_solution_html(server, mysql_agile, build_url, filename):
     # console output information
     project_name = build_url.split("/")[4]
     build_number = build_url.split("/")[5]
-    output = server.get_build_console_output(project_name, int(build_number))
+    # 获取构建日志
+    #   方法1：使用jenkins api接口
+    #       存在bug: 构建步骤期间无法检索完整的控制台输出
+    #       参考: Jenkins - retrieve full console output during build step
+    #       http://www.it1352.com/547426.html
+    # output = server.get_build_console_output(project_name, int(build_number))
+    #   方法2：使用服务器中的日志文件
+    #       问题：依赖于Jenkins Master
+    #       JENKINS_HOME: /var/jenkins_home
+    output_file = "/var/jenkins_home/jobs/{0}/builds/{1}/log".format(
+        project_name, build_number)
+    with open(output_file, "r") as fr:
+        output = fr.read()
 
     print(" WARNING: The name of error info file is {0}".format(filename))
     try:
