@@ -41,3 +41,13 @@ INSERT INTO case_lib(case_key, case_info, case_type, case_description, case_solu
     'case_remark3'
 );
 
+
+CREATE TABLE IF NOT EXISTS `build_info` (
+    `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `job_name` varchar(256) NOT NULL COMMENT '工程名',
+    `build_number` varchar(1024) NOT NULL COMMENT '构建编号',
+    `build_url` varchar(256) UNIQUE NOT NULL COMMENT '构建地址',
+    `recipients` varchar(1024) COMMENT '邮件接收人',
+    `err_info` varchar(1024) COMMENT '错误信息',
+    `err_key` varchar(512) COMMENT '错误关键字'
+);

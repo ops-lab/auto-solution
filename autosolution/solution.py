@@ -148,6 +148,16 @@ def get_solution_html(server, mysql_agile, build_url, filename):
                 err_info = re.findall(".*{0}.*".format(case_key), output)
                 err_info = "\n".join(set(err_info))
                 update_content(content, mysql_agile, case_key, err_info)
+                # 将错误的构建信息内容存储到构建信息表内，留待后续使用
+                sql_cmd = "INSERT INTO build_info (job_name, build_number, "\
+                          "build_url, err_info, err_key) "\
+                          "VALUES('{0}', '{1}', '{2}', '{3}', '{4}');"\
+                          .format(project_name,
+                                  build_number,
+                                  build_url,
+                                  err_info,
+                                  case_key)
+                mysql_agile.execute(sql_cmd)
                 # 保存case_key内容，展示到邮件的 [报错信息] 中
                 f.write("".join(err_info) + "\n")
     except Exception as e:

@@ -52,8 +52,21 @@ class MySQLEngine(object):
         self.conn.close()
 
     def execute(self, sql_cmd, params=None):
-        self.cursor.execute(sql_cmd, params)
-        data = self.cursor.fetchall()
+        try:
+            self.cursor.execute(sql_cmd, params)
+        except Exception as e:
+            raise Exception(str(e) + sql_cmd)
+        if sql_cmd.lower().startswith('select'):
+            try :
+                data = self.cursor.fetchall()
+            except Exception as e:
+                data = ()
+                print(e)
+        elif sql_cmd.lower().startswith('insert'):
+            self.conn.commit()
+            data = None
+        else:
+            data = ()
         return data
 
 class MySQLAgile(MySQLEngine):
