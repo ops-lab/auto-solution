@@ -158,6 +158,34 @@ def get_solution_html(server, mysql_agile, build_url, filename):
                                   err_info,
                                   case_key)
                 mysql_agile.execute(sql_cmd)
+                # 将错误的构建信息内容存储到构建信息表内
+                sql_cmd = "INSERT INTO build_info (job_name, build_number, "\
+                          "build_url, err_info, err_key) "\
+                          "VALUES('{0}', '{1}', '{2}', '{3}', '{4}');"\
+                          .format(project_name,
+                                  build_number,
+                                  build_url,
+                                  err_info.replace("'", "\\'"),
+                                  case_key.replace("'", "\\'"))
+                mysql_agile.execute(sql_cmd)
+                # 清除重复数据
+                from datetime import datetime, timedelta
+                time_s = datetime.utcnow() - timedelta(days=1)
+                time_e= datetime.utcnow() + timedelta(days=1)
+                timestamper_s = "{0}-{1}-{2}".format(
+                    time_s.year, time_s.month, time_s.day)
+                timestamper_e = "{0}-{1}-{2}".format(
+                    time_e.year, time_e.month, time_e.day)
+                sql_cmd1 = \
+                    "DELETE FROM build_info WHERE "\
+                    "create_time>='{0}' AND create_time<='{1}' "\
+                    "AND id NOT IN (SELECT id FROM "\
+                    "(SELECT MAX(id) AS id FROM build_info WHERE "\
+                    "create_time>='{0}' AND create_time<='{1}' "\
+                    "GROUP BY build_info.build_url, build_info.err_info "\
+                    "HAVING count(*)>=1) m);"\
+                    .format(timestamper_s, timestamper_e)
+                mysql_agile.execute(sql_cmd1)
                 # 保存case_key内容，展示到邮件的 [报错信息] 中
                 f.write("".join(err_info) + "\n")
     except Exception as e:
@@ -289,6 +317,18 @@ def get_html_msg(df_html, build_url, err_info_file):
 
             <table width="95%" cellpadding="0" cellspacing="0"
             style="font-size: 11pt; font-family: Tahoma, Arial, Helvetica, sans-serif">
+                <tr>
+                    <td>
+                        <br />
+                        <b><font color="#0B610B">工具说明</font></b>
+                        <hr size="2" width="100%" align="center" />
+                    </td>
+                </tr>
+                <tr>
+                    <p style="color: #ee1313; font-size: 11pt;" align="left">
+                        &nbsp;&nbsp;&nbsp;&nbsp;目的：根据错误码快速支撑开发工程师问题定位/解决
+                    </p>
+                </tr>
                 <!--构建信息-->
                 <tr>
                     <td>

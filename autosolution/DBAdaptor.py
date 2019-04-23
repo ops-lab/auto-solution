@@ -62,10 +62,8 @@ class MySQLEngine(object):
             except Exception as e:
                 data = ()
                 print(e)
-        elif sql_cmd.lower().startswith('insert'):
-            self.conn.commit()
-            data = None
         else:
+            self.conn.commit()
             data = ()
         return data
 

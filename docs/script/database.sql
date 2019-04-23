@@ -48,13 +48,21 @@ INSERT INTO case_lib(case_key, case_info, case_type, case_description, case_solu
     'case_remark3'
 );
 
+-- modify table column properties
+-- ALTER TABLE build_info MODIFY column build_number varchar(256) NOT NULL COMMENT '构建编号';
+-- ALTER TABLE build_info MODIFY column build_url varchar(256) NOT NULL COMMENT '构建地址';
+-- ALTER TABLE build_info MODIFY column recipients varchar(256) COMMENT '邮件接收人';
+-- ALTER TABLE build_info MODIFY column err_key varchar(256) COMMENT '错误关键字';
 
+-- add table column properties
+-- alter table build_info add column create_time datetime NULL DEFAULT CURRENT_TIMESTAMP comment "创建时间";
 CREATE TABLE IF NOT EXISTS `build_info` (
     `id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT COMMENT 'id',
     `job_name` varchar(256) NOT NULL COMMENT '工程名',
-    `build_number` varchar(1024) NOT NULL COMMENT '构建编号',
-    `build_url` varchar(256) UNIQUE NOT NULL COMMENT '构建地址',
-    `recipients` varchar(1024) COMMENT '邮件接收人',
+    `build_number` varchar(256) NOT NULL COMMENT '构建编号',
+    `build_url` varchar(256) NOT NULL COMMENT '构建地址',
+    `recipients` varchar(256) COMMENT '邮件接收人',
     `err_info` varchar(1024) COMMENT '错误信息',
-    `err_key` varchar(512) COMMENT '错误关键字'
+    `err_key` varchar(256) COMMENT '错误关键字',
+    `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP comment "创建时间"
 );
