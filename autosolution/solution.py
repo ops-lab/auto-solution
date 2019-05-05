@@ -137,13 +137,17 @@ def get_solution_html(server, mysql_agile, build_url, filename):
     output_file = "/var/jenkins_home/jobs/{0}/builds/{1}/log".format(
         project_name, build_number)
     with open(output_file, "r") as fr:
+        # iso-8859-1 编码
         output = fr.read()
+        output = output.decode('gbk', 'ignore').encode('utf-8')
 
     print(" WARNING: The name of error info file is {0}".format(filename))
     try:
         f = open(filename, "w")
         for case_key in case_keys:
+            # unicode 编码
             case_key = case_key.replace("*", "\*").replace("[", "\[")
+            case_key = case_key.encode('utf-8')
             if bool(re.search(case_key, output, re.IGNORECASE)):
                 err_info = re.findall(".*{0}.*".format(case_key), output)
                 err_info = "\n".join(set(err_info))
