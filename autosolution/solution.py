@@ -45,11 +45,18 @@ def parse_parameters():
     parser = argparse.ArgumentParser(description=usage)
     parser.add_argument("--build_url", dest="build_url", default=None,
                         help="BUILD_URL default value is None.")
+    parser.add_argument("--mode", dest="mode", default="product",
+                        help="mode default value is product.")
 
     args = parser.parse_args()
     # parser.print_help()
-    print("python {0} --build_url {1}".format(os.path.basename(__file__),
-                                              args.build_url))
+    print("python {0} --build_url {1} --receivers_weci {2}".format(
+        os.path.basename(__file__), args.build_url, args.receivers_weci))
+    print("python {0} --build_url {1} --receivers_weci {2} --mode {3}".format(
+        os.path.basename(__file__),
+        args.build_url,
+        args.receivers_weci,
+        args.mode))
     return args
 
 def get_case_keys(mysql_agile):
@@ -70,7 +77,9 @@ def update_content(content, mysql_agile, case_key, err_info):
     sql_cmd = "SELECT case_key, case_info, case_type, case_description, "\
               "case_solution, case_remark FROM case_lib WHERE "\
               "case_key='{0}';".format(case_key.replace("'", "\\'"))
-    case_key = case_key.replace("\*", "*").replace("\[", "[")
+    case_key = case_key.replace("\*", "*").replace("\[", "[")\
+        .replace("\(", "(").replace("\)", ")")
+
     data = mysql_agile.execute(sql_cmd)
     if len(data) == 0:
         remark = "WARNING: No solution to the problem was found. " \
@@ -146,7 +155,8 @@ def get_solution_html(server, mysql_agile, build_url, filename):
         f = open(filename, "w")
         for case_key in case_keys:
             # unicode 编码
-            case_key = case_key.replace("*", "\*").replace("[", "\[")
+            case_key = case_key.replace("*", "\*").replace("[", "\[")\
+                .replace("(", "\(").replace(")", "\)")
             case_key = case_key.encode('utf-8')
             if bool(re.search(case_key, output, re.IGNORECASE)):
                 err_info = re.findall(".*{0}.*".format(case_key), output)
@@ -442,14 +452,17 @@ def _format_addr(s):
         addr.encode("utf-8") if isinstance(addr, unicode) else addr
     ))
 
-def send_mail(html_msg, project_name, receivers):
+def send_mail(html_msg, project_name, receivers, mode):
     smtp_host = "mail.email.com"
     smtp_port = 25
     username = "jenkins@email.com"
     password = "jenkins_password"
 
     sender = "jenkins@email.com"
-    cc = "jiuchou@email.com"
+    if mode != "product":
+        cc = "jiuchou@.com"
+    else:
+        cc = "jiuchou@.com"
 
     mail_msg = MIMEText(html_msg, "html", "utf-8")
     mail_msg['From'] = _format_addr(sender)
@@ -479,6 +492,7 @@ def send_mail(html_msg, project_name, receivers):
 if __name__ == "__main__":
     args = parse_parameters()
     build_url = args.build_url
+    mode = args.mode
 
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     ARCHIVE_DIR = os.path.join(BASE_DIR, "archive")
@@ -508,6 +522,4 @@ if __name__ == "__main__":
         sql_agile.close()
         mysql_agile.close()
 
-    send_mail(html_msg, build_url, receivers)
-
-
+    send_mail(html_msg, build_url, receivers, mode)
